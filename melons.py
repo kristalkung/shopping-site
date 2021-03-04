@@ -11,14 +11,14 @@ class Melon(object):
     """An Ubermelon Melon type."""
 
     def __init__(self,
-                 melon_id,
-                 melon_type,
-                 common_name,
-                 price,
-                 image_url,
-                 color,
-                 seedless,
-                 ):
+                melon_id,
+                melon_type,
+                common_name,
+                price,
+                image_url,
+                color,
+                seedless,
+                ):
         self.melon_id = melon_id
         self.melon_type = melon_type
         self.common_name = common_name
@@ -49,12 +49,12 @@ def read_melon_types_from_file(filepath):
     with open(filepath) as file:
         for line in file:
             (melon_id,
-             melon_type,
-             common_name,
-             price,
-             img_url,
-             color,
-             seedless) = line.strip().split("|")
+            melon_type,
+            common_name,
+            price,
+            img_url,
+            color,
+            seedless) = line.strip().split("|")
     
             price = float(price)
     
@@ -62,12 +62,12 @@ def read_melon_types_from_file(filepath):
             seedless = (seedless == "1")
     
             melon_types[melon_id] = Melon(melon_id,
-                                          melon_type,
-                                          common_name,
-                                          price,
-                                          img_url,
-                                          color,
-                                          seedless)
+                                        melon_type,
+                                        common_name,
+                                        price,
+                                        img_url,
+                                        color,
+                                        seedless)
 
     return melon_types
 
