@@ -40,7 +40,7 @@ def list_melons():
 
     melon_list = melons.get_all()
     return render_template("all_melons.html",
-                           melon_list=melon_list)
+                        melon_list=melon_list)
 
 
 @app.route("/melon/<melon_id>")
@@ -53,7 +53,7 @@ def show_melon(melon_id):
     melon = melons.get_by_id(melon_id)
     print(melon)
     return render_template("melon_details.html",
-                           display_melon=melon)
+                        display_melon=melon)
 
 
 @app.route("/cart")
@@ -78,7 +78,28 @@ def show_shopping_cart():
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
 
-    return render_template("cart.html")
+    current_melon = 0
+    quantity = 0
+    order_total = 0
+    melon_cart = []
+    price = 0
+
+    cart = session.get("cart", {})
+
+    for melon_id, quantity in cart.items():
+        current_melon = melons.get_by_id(melon_id)
+        total_cost = quantity * current_melon.price
+        order_total += total_cost
+
+        current_melon.quantity = quantity
+        current_melon.total_cost = total_cost
+
+        melon_cart.append(current_melon)
+    
+
+    return render_template("cart.html", 
+                            melon_cart=melon_cart,
+                            order_total=order_total)
 
 
 @app.route("/add_to_cart/<melon_id>")
@@ -100,7 +121,17 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
-    return "Oops! This needs to be implemented!"
+    if 'cart' in session:
+        cart = session['cart']
+    else:
+        cart = session['cart'] = {}
+
+    cart[melon_id] = cart.get(melon_id, 0) + 1
+    
+
+    flash("Melon successfully added")
+    print(cart)
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
