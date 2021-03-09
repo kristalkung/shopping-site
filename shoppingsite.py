@@ -82,7 +82,6 @@ def show_shopping_cart():
     quantity = 0
     order_total = 0
     melon_cart = []
-    price = 0
 
     cart = session.get("cart", {})
 
